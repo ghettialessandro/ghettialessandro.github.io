@@ -11,53 +11,39 @@
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             height: 100%;
-            background-color: white; /* Sfondo bianco come richiesto */
+            background-color: white;
             color: #333;
-            scroll-behavior: smooth;
+            overflow: hidden; /* Nascondiamo la scrollbar del body, usiamo quella del container */
         }
 
-        /* LA MAGIA DELLO SCROLL SNAP (L'effetto "Fogli") */
+        /* CONTAINER PRINCIPALE */
         .container {
-            height: 100vh; /* 100% dell'altezza dello schermo */
-            overflow-y: scroll; /* Abilita lo scroll verticale */
-            scroll-snap-type: y mandatory; /* Obbliga lo scatto sulle sezioni */
+            height: 100vh;
+            overflow-y: scroll; /* Scroll verticale abilitato qui */
+            scroll-snap-type: y mandatory; /* Effetto calamita */
+            scroll-behavior: smooth; /* Scorrimento dolce */
         }
 
-        /* STILE DEL SINGOLO FOGLIO */
+        /* LE SINGOLE PAGINE */
         section {
-            height: 100vh; /* Ogni foglio è alto come tutto lo schermo */
-            scroll-snap-align: start; /* Si aggancia all'inizio */
+            height: 100vh;
+            scroll-snap-align: start;
             display: flex;
-            flex-direction: column; /* Elementi uno sotto l'altro */
-            justify-content: center; /* Centrati verticalmente */
-            align-items: center; /* Centrati orizzontalmente */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
             box-sizing: border-box;
             text-align: center;
+            position: relative; /* Serve per posizionare elementi interni se necessario */
         }
 
-        /* STILE DEI TESTI */
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 10px;
-            color: #000;
-        }
-        
-        h2 {
-            font-size: 1.5rem;
-            font-weight: 300;
-            color: #555;
-            margin-top: 0;
-        }
+        /* STILE TESTI */
+        h1 { font-size: 3.5rem; margin-bottom: 10px; color: #000; }
+        h2 { font-size: 1.5rem; font-weight: 300; color: #555; margin-top: 0; }
+        p { font-size: 1.2rem; line-height: 1.6; max-width: 800px; color: #444; }
 
-        p {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            max-width: 800px; /* Per non far diventare le righe lunghissime */
-            color: #444;
-        }
-
-        /* STILE DEL BOTTONE */
+        /* STILE BOTTONE DOWNLOAD */
         .btn {
             display: inline-block;
             margin-top: 20px;
@@ -68,39 +54,51 @@
             font-weight: bold;
             text-transform: uppercase;
             transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .btn:hover { background-color: #000; color: white; }
+
+        /* LA FRECCIA MAGICA (Navigation Arrow) */
+        .nav-arrow {
+            position: fixed; /* Rimane fissa sullo schermo */
+            bottom: 30px;    /* Parte dal basso */
+            left: 50%;
+            transform: translateX(-50%); /* Centrata orizzontalmente */
+            font-size: 3rem;
+            cursor: pointer;
+            z-index: 100; /* Sta sopra a tutto */
+            transition: all 0.5s ease; /* Animazione fluida quando si sposta */
+            color: #333;
+            user-select: none; /* Non si può selezionare come testo */
+            animation: bounce 2s infinite; /* Saltella */
         }
 
-        .btn:hover {
-            background-color: #000;
-            color: white;
+        /* CLASSE PER QUANDO LA FRECCIA VA IN ALTO */
+        .nav-arrow.go-up {
+            bottom: auto; /* Smette di stare in basso */
+            top: 30px;    /* Va in alto */
+            transform: translateX(-50%) rotate(180deg); /* Si gira a testa in giù */
         }
 
-        /* IMMAGINE PROFILO (Opzionale) */
-        .profile-img {
-            width: 200px;
-            height: 200px;
-            background-color: #eee; /* Grigio se non hai la foto */
-            border-radius: 50%; /* Cerchio */
-            margin-bottom: 20px;
-            object-fit: cover;
-        }
-
-        /* FRECCETTA PER SCORRERE (Animazione) */
-        .scroll-down {
-            position: absolute;
-            bottom: 30px;
-            animation: bounce 2s infinite;
-            font-size: 2rem;
-            opacity: 0.5;
-        }
-
+        /* ANIMAZIONE SALTELLO */
         @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-10px);}
-            60% {transform: translateY(-5px);}
+            0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0) rotate(0deg);}
+            40% {transform: translateX(-50%) translateY(-10px) rotate(0deg);}
+            60% {transform: translateX(-50%) translateY(-5px) rotate(0deg);}
+        }
+        
+        /* Modifica animazione quando è girata (per non rompere la rotazione) */
+        .nav-arrow.go-up {
+            animation: bounceUp 2s infinite;
         }
 
-        /* PER CELLULARI */
+        @keyframes bounceUp {
+            0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0) rotate(180deg);}
+            40% {transform: translateX(-50%) translateY(-10px) rotate(180deg);}
+            60% {transform: translateX(-50%) translateY(-5px) rotate(180deg);}
+        }
+
+        /* MEDIA QUERY PER CELLULARI */
         @media (max-width: 768px) {
             h1 { font-size: 2.5rem; }
             p { font-size: 1rem; }
@@ -109,13 +107,13 @@
 </head>
 <body>
 
-    <div class="container">
+    <div class="nav-arrow" id="arrow" onclick="gestisciClick()">↓</div>
+
+    <div class="container" id="mainContainer">
 
         <section id="home">
             <h1>Alessandro Ghetti</h1>
             <h2>Studente Artificial Intelligence<br>Developer e Data Analyst</h2>
-            
-            <div class="scroll-down">↓</div>
         </section>
 
         <section id="profile">
@@ -130,17 +128,54 @@
 
         <section id="contact">
             <h1>Dati Personali</h1>
-            
             <div style="text-align: left; margin-top: 30px; font-size: 1.2rem;">
                 <p><strong>Email:</strong><br> alessandro.ghetti.its@gmail.com</p>
                 <p><strong>Telefono:</strong><br> +39 366 401 3780</p>
                 <p><strong>Sede:</strong><br> Pieve di Soligo (TV)</p>
             </div>
-
             <a href="cv.pdf" class="btn" download>Scarica il mio CV</a>
         </section>
 
     </div>
+
+    <script>
+        const container = document.getElementById('mainContainer');
+        const arrow = document.getElementById('arrow');
+
+        // FUNZIONE 1: Ascolta lo scroll
+        container.addEventListener('scroll', () => {
+            // Calcoliamo a che punto siamo
+            const scrollPosition = container.scrollTop; // Quanto abbiamo scrollato
+            const windowHeight = window.innerHeight; // Quanto è alto lo schermo
+            const totalHeight = container.scrollHeight; // Altezza totale del sito
+
+            // Se siamo vicini alla fine (Pagina 3)
+            // Usiamo un piccolo margine di tolleranza (-100px)
+            if (scrollPosition + windowHeight >= totalHeight - 50) {
+                arrow.classList.add('go-up'); // Aggiunge la classe che la sposta su
+            } else {
+                arrow.classList.remove('go-up'); // Rimuove la classe (torna giù)
+            }
+        });
+
+        // FUNZIONE 2: Cosa succede quando clicchi la freccia
+        function gestisciClick() {
+            // Se la freccia ha la classe "go-up", vuol dire che punta in alto
+            if (arrow.classList.contains('go-up')) {
+                // Torna all'inizio (Pagina 1)
+                container.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            } else {
+                // Altrimenti scendi di una pagina
+                container.scrollBy({
+                    top: window.innerHeight,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    </script>
 
 </body>
 </html>
