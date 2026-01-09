@@ -3,63 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alessandro Ghetti - AI Developer</title>
+    <title>Alessandro Ghetti - Portfolio</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        /* RESET E IMPOSTAZIONI BASE */
+        body, html {
             margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100%;
+            background-color: white; /* Sfondo bianco come richiesto */
+            color: #333;
+            scroll-behavior: smooth;
         }
-        .card {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+        /* LA MAGIA DELLO SCROLL SNAP (L'effetto "Fogli") */
+        .container {
+            height: 100vh; /* 100% dell'altezza dello schermo */
+            overflow-y: scroll; /* Abilita lo scroll verticale */
+            scroll-snap-type: y mandatory; /* Obbliga lo scatto sulle sezioni */
+        }
+
+        /* STILE DEL SINGOLO FOGLIO */
+        section {
+            height: 100vh; /* Ogni foglio è alto come tutto lo schermo */
+            scroll-snap-align: start; /* Si aggancia all'inizio */
+            display: flex;
+            flex-direction: column; /* Elementi uno sotto l'altro */
+            justify-content: center; /* Centrati verticalmente */
+            align-items: center; /* Centrati orizzontalmente */
+            padding: 20px;
+            box-sizing: border-box;
             text-align: center;
-            max-width: 400px;
-            width: 90%;
         }
-        h1 { margin-bottom: 5px; color: #2c3e50; }
-        p.role { color: #7f8c8d; margin-top: 0; font-weight: 500; }
-        .info { margin: 20px 0; font-size: 0.9em; color: #555; }
-        .info div { margin-bottom: 8px; }
+
+        /* STILE DEI TESTI */
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            color: #000;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: #555;
+            margin-top: 0;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            max-width: 800px; /* Per non far diventare le righe lunghissime */
+            color: #444;
+        }
+
+        /* STILE DEL BOTTONE */
         .btn {
             display: inline-block;
-            background-color: #007bff;
-            color: white;
-            padding: 12px 25px;
+            margin-top: 20px;
+            padding: 15px 30px;
+            border: 2px solid #000;
+            color: #000;
             text-decoration: none;
-            border-radius: 25px;
             font-weight: bold;
-            transition: background 0.3s;
-            margin-top: 15px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
         }
-        .btn:hover { background-color: #0056b3; }
-        .footer { margin-top: 20px; font-size: 0.8em; color: #aaa; }
+
+        .btn:hover {
+            background-color: #000;
+            color: white;
+        }
+
+        /* IMMAGINE PROFILO (Opzionale) */
+        .profile-img {
+            width: 200px;
+            height: 200px;
+            background-color: #eee; /* Grigio se non hai la foto */
+            border-radius: 50%; /* Cerchio */
+            margin-bottom: 20px;
+            object-fit: cover;
+        }
+
+        /* FRECCETTA PER SCORRERE (Animazione) */
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            animation: bounce 2s infinite;
+            font-size: 2rem;
+            opacity: 0.5;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        /* PER CELLULARI */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            p { font-size: 1rem; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h1>Alessandro Ghetti</h1>
-        <p class="role">AI Developer Student & Data Analyst</p>
-        
-        <div class="info">
-            <div>📍 Pieve di Soligo (TV)</div>
-            <div>📧 alessandro.ghetti.its@gmail.com</div>
-            <div>📞 +39 366 401 3780</div>
-        </div>
+    <div class="container">
 
-        <a href="cv.pdf" class="btn" download>Scarica il mio CV</a>
+        <section id="home">
+            <h1>Alessandro Ghetti</h1>
+            <h2>Studente Artificial Intelligence<br>Developer e Data Analyst</h2>
+            
+            <div class="scroll-down">↓</div>
+        </section>
 
-        <div class="footer">
-            <p>Hosted on GitHub Pages</p>
-        </div>
+        <section id="profile">
+            <div style="max-width: 600px; text-align: left;">
+                <small style="text-transform: uppercase; font-weight: bold; letter-spacing: 2px;">Profilo</small>
+                <p style="margin-top: 20px;">
+                    Aspirante Data Analyst. Mindset pragmatico e logico più che teorico, con focus attuale sullo sviluppo in ambiente Python e MySQL. <br><br>
+                    Comunico in modo efficace e lavoro bene in team, puntando a trasformare rapidamente le nuove competenze teoriche in abilità pratiche.
+                </p>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h1>Dati Personali</h1>
+            
+            <div style="text-align: left; margin-top: 30px; font-size: 1.2rem;">
+                <p><strong>Email:</strong><br> alessandro.ghetti.its@gmail.com</p>
+                <p><strong>Telefono:</strong><br> +39 366 401 3780</p>
+                <p><strong>Sede:</strong><br> Pieve di Soligo (TV)</p>
+            </div>
+
+            <a href="cv.pdf" class="btn" download>Scarica il mio CV</a>
+        </section>
+
     </div>
 
 </body>
