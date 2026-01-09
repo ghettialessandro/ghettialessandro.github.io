@@ -13,15 +13,15 @@
             height: 100%;
             background-color: white;
             color: #333;
-            overflow: hidden; /* Nascondiamo la scrollbar del body, usiamo quella del container */
+            overflow: hidden;
         }
 
         /* CONTAINER PRINCIPALE */
         .container {
             height: 100vh;
-            overflow-y: scroll; /* Scroll verticale abilitato qui */
-            scroll-snap-type: y mandatory; /* Effetto calamita */
-            scroll-behavior: smooth; /* Scorrimento dolce */
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
         }
 
         /* LE SINGOLE PAGINE */
@@ -35,13 +35,23 @@
             padding: 20px;
             box-sizing: border-box;
             text-align: center;
-            position: relative; /* Serve per posizionare elementi interni se necessario */
+            position: relative;
         }
 
         /* STILE TESTI */
         h1 { font-size: 3.5rem; margin-bottom: 10px; color: #000; }
         h2 { font-size: 1.5rem; font-weight: 300; color: #555; margin-top: 0; }
         p { font-size: 1.2rem; line-height: 1.6; max-width: 800px; color: #444; }
+
+        /* STILE PER LA PAGINA LEGALE (Testo più piccolo e formale) */
+        .legal-text {
+            font-size: 1rem;
+            color: #777;
+            font-style: italic;
+            max-width: 600px;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
 
         /* STILE BOTTONE DOWNLOAD */
         .btn {
@@ -58,39 +68,34 @@
         }
         .btn:hover { background-color: #000; color: white; }
 
-        /* LA FRECCIA MAGICA (Navigation Arrow) */
+        /* LA FRECCIA MAGICA */
         .nav-arrow {
-            position: fixed; /* Rimane fissa sullo schermo */
-            bottom: 30px;    /* Parte dal basso */
+            position: fixed;
+            bottom: 30px;
             left: 50%;
-            transform: translateX(-50%); /* Centrata orizzontalmente */
+            transform: translateX(-50%);
             font-size: 3rem;
             cursor: pointer;
-            z-index: 100; /* Sta sopra a tutto */
-            transition: all 0.5s ease; /* Animazione fluida quando si sposta */
+            z-index: 100;
+            transition: all 0.5s ease;
             color: #333;
-            user-select: none; /* Non si può selezionare come testo */
-            animation: bounce 2s infinite; /* Saltella */
+            user-select: none;
+            animation: bounce 2s infinite;
         }
 
-        /* CLASSE PER QUANDO LA FRECCIA VA IN ALTO */
         .nav-arrow.go-up {
-            bottom: auto; /* Smette di stare in basso */
-            top: 30px;    /* Va in alto */
-            transform: translateX(-50%) rotate(180deg); /* Si gira a testa in giù */
+            bottom: auto;
+            top: 30px;
+            transform: translateX(-50%) rotate(180deg);
         }
 
-        /* ANIMAZIONE SALTELLO */
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0) rotate(0deg);}
             40% {transform: translateX(-50%) translateY(-10px) rotate(0deg);}
             60% {transform: translateX(-50%) translateY(-5px) rotate(0deg);}
         }
-        
-        /* Modifica animazione quando è girata (per non rompere la rotazione) */
-        .nav-arrow.go-up {
-            animation: bounceUp 2s infinite;
-        }
+
+        .nav-arrow.go-up { animation: bounceUp 2s infinite; }
 
         @keyframes bounceUp {
             0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0) rotate(180deg);}
@@ -98,7 +103,6 @@
             60% {transform: translateX(-50%) translateY(-5px) rotate(180deg);}
         }
 
-        /* MEDIA QUERY PER CELLULARI */
         @media (max-width: 768px) {
             h1 { font-size: 2.5rem; }
             p { font-size: 1rem; }
@@ -136,43 +140,44 @@
             <a href="cv.pdf" class="btn" download>Scarica il mio CV</a>
         </section>
 
+        <section id="legal">
+            <h2 style="margin-bottom: 30px;">Grazie per l'attenzione</h2>
+            
+            <div class="legal-text">
+                <p>
+                    Autorizzo il trattamento dei miei dati personali presenti nel CV ai sensi dell’art. 13 d. lgs. 30 giugno 2003 n. 196 - 
+                    “Codice in materia di protezione dei dati personali” e dell’art. 13 GDPR 679/16 - 
+                    “Regolamento europeo sulla protezione dei dati personali”.
+                </p>
+                <p style="margin-top: 15px; font-weight: bold;">
+                    Padova, 2026
+                </p>
+            </div>
+        </section>
+
     </div>
 
     <script>
         const container = document.getElementById('mainContainer');
         const arrow = document.getElementById('arrow');
 
-        // FUNZIONE 1: Ascolta lo scroll
         container.addEventListener('scroll', () => {
-            // Calcoliamo a che punto siamo
-            const scrollPosition = container.scrollTop; // Quanto abbiamo scrollato
-            const windowHeight = window.innerHeight; // Quanto è alto lo schermo
-            const totalHeight = container.scrollHeight; // Altezza totale del sito
+            const scrollPosition = container.scrollTop;
+            const windowHeight = window.innerHeight;
+            const totalHeight = container.scrollHeight;
 
-            // Se siamo vicini alla fine (Pagina 3)
-            // Usiamo un piccolo margine di tolleranza (-100px)
             if (scrollPosition + windowHeight >= totalHeight - 50) {
-                arrow.classList.add('go-up'); // Aggiunge la classe che la sposta su
+                arrow.classList.add('go-up');
             } else {
-                arrow.classList.remove('go-up'); // Rimuove la classe (torna giù)
+                arrow.classList.remove('go-up');
             }
         });
 
-        // FUNZIONE 2: Cosa succede quando clicchi la freccia
         function gestisciClick() {
-            // Se la freccia ha la classe "go-up", vuol dire che punta in alto
             if (arrow.classList.contains('go-up')) {
-                // Torna all'inizio (Pagina 1)
-                container.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
+                container.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
-                // Altrimenti scendi di una pagina
-                container.scrollBy({
-                    top: window.innerHeight,
-                    behavior: 'smooth'
-                });
+                container.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
             }
         }
     </script>
